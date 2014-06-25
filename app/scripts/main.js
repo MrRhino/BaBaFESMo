@@ -4,12 +4,16 @@ require.config({
         'jquery': '../bower_components/jquery/dist/jquery',
         'backbone': '../bower_components/backbone/backbone',
         'underscore': '../bower_components/underscore/underscore',
-        'handlebars': '../bower_components/handlebars/handlebars',
-        'templates': '../templates/templates',
-        'hbshelpers': '../templates/helpers/helpers',
-        'messages': 'lib/messages',
-        'print': 'lib/print',
-        'sampledata': 'app/sampledata'
+        'helpers': 'lib/helpers',
+        'ctlr': '../modules/singletons/pagecontroller',
+        // MVC
+        'productListView': '../modules/views/productListView',
+        'productEditView': '../modules/views/productEditView',
+        'router': '../modules/routers/router',
+        // Product List View
+        'productsCollection': '../modules/collections/productsCollection',
+        // Product Edit View
+        'productModel': '../modules/models/productModel'
     },
     shim: {
         'jquery': {
@@ -23,77 +27,30 @@ require.config({
         'underscore': {
             exports: '_'
         },
-        'handlebars': {
-            exports: 'Handlebars'
+        'ctlr': {
+            exports: 'ctlr'
         },
-        'templates': {
-            deps: ['handlebars']
-        },
-        'hbshelpers': {
-            deps: ['handlebars']
+        'helpers': {
+            deps: ['jquery']
         }
     }
 });
 
-require(['jquery', 'messages', 'print', 'backbone', 'handlebars', 'underscore', 'sampledata', 'templates', 'hbshelpers'], function($, messages, print, Backbone, Handlebars, _, sampledata) {
-    'use strict';
-    /*global MyApp*/
-    (function($, MyApp) {
-        var ListView = Backbone.View.extend({
-            el: $('body'), // attaches `this.el` to an existing element.
-            initialize: function() {
-                _.bindAll(this, 'render'); // fixes loss of context for 'this' within methods
-                this.render(); // not all views are self-rendering. This one is.
-            },
-            render: function() {
-                $(this.el).append('<h3>Users</h3>');
-                $(this.el).append(MyApp.Templates.users(sampledata.data));
-            }
-        });
-        new ListView();
-    })($, MyApp);
-
-    (function($, MyApp) {
-        var ListView = Backbone.View.extend({
-            el: $('body'), // attaches `this.el` to an existing element.
-            initialize: function() {
-                _.bindAll(this, 'render'); // fixes loss of context for 'this' within methods
-                this.render(); // not all views are self-rendering. This one is.
-            },
-            render: function() {
-                $(this.el).append('<h3>Customers</h3>');
-                $(this.el).append(MyApp.Templates.customers(sampledata.data));
-            }
-        });
-        new ListView();
-    })($, MyApp);
-
-
- 
-    //$('body').append(MyApp.Templates.users(sampledata.data));
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+require(['jquery',
+        'ctlr',
+        'helpers',
+        'backbone',
+        'underscore',
+        //MVC
+        'productListView',
+        'productEditView',
+        'router',
+        // Product List View
+        'productsCollection',
+        // Product Edit View
+        'productModel'
+    ],
+    function($, ctlr) {
+        'use strict';
+        ctlr.init();
+    });

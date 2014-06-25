@@ -53,12 +53,6 @@ module.exports = function (grunt) {
                 files: ['<%= config.app %>/styles/{,*/}*.css'],
                 tasks: ['newer:copy:styles', 'autoprefixer']
             },
-            handlebars: {
-                files: [
-                    '<%= config.app %>/modules/templates/*.hbs'
-                ],
-                tasks: 'handlebars'
-            },
             livereload: {
                 options: {
                     livereload: '<%= connect.options.livereload %>'
@@ -66,9 +60,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= config.app %>/{,*/}*.html',
                     '.tmp/styles/{,*/}*.css',
-                    '<%= config.app %>/images/{,*/}*',
-                    '<%= config.app %>/modules/templates/*.hbs',
-                    '<%= config.app %>/templates/helpers/*.js'
+                    '<%= config.app %>/images/{,*/}*'
                 ]
             }
         },
@@ -303,7 +295,7 @@ module.exports = function (grunt) {
                 files: {
                     '<%= config.dist %>/styles/main.css': [
                         '.tmp/styles/{,*/}*.css',
-                        '<%= config.app %>/styles/{,*/}*.css'
+                        // '<%= config.app %>/styles/{,*/}*.css'
                     ]
                 }
             }
@@ -362,7 +354,7 @@ module.exports = function (grunt) {
                         '*.{ico,png,txt}',
                         '.htaccess',
                         'images/{,*/}*.webp',
-                        '{,*/}*.html',
+                        '**/*.html',
                         'styles/fonts/{,*/}*.*',
                         'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*.*'
                     ]
@@ -395,47 +387,10 @@ module.exports = function (grunt) {
                 }
             }
         },
-        handlebars: {
-            options: {
-                namespace: 'MyApp.Templates',
-                processName: function(filePath) {
-                    console.log(filePath);
-                    return filePath
-                        .replace(/app\/modules\/templates\//, '')
-                        .replace(/\.hbs$/, '');
-                }
-            },
-            all: {
-                files: {
-                    '<%= config.app %>/templates/templates.js': ['<%= config.app %>/modules/templates/**/*']
-                }
-            }
-        },
-        // handlebars: {
-        //   compile: {
-        //     files: {
-        //       "temp/modules/compiled-templates.js": [
-        //         "app/modules/*/templates/**/*.hbs"
-        //       ]
-        //     },
-        //     options: {
-        //       namespace: 'MyApp.Templates',
-        //       wrapped: true, 
-        //       processName: function(filename) {
-        //         // funky name processing here
-        //         return filename
-        //                 .replace(/^app\/modules\//, '')
-        //                 .replace(/\.hbs$/, '');
-        //       }
-        //     }
-        //   }
-        // },
-
         // Run some tasks in parallel to speed up build process
         concurrent: {
             server: [
                 'compass:server',
-                'handlebars',
                 'copy:styles'
             ],
             test: [
@@ -443,7 +398,6 @@ module.exports = function (grunt) {
             ],
             dist: [
                 'compass',
-                'handlebars',
                 'copy:styles',
                 'imagemin',
                 'svgmin'
@@ -488,13 +442,11 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'handlebars',
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
         'concat',
         'cssmin',
-        'uglify',
         'copy:dist',
         'requirejs:dist', // AFTER copy:dist!
         'clean:postrequirejs',
