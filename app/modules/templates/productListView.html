@@ -1,0 +1,22 @@
+<input type="button" onclick="location.href='#/new'" value="New"/>
+ <hr />
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>First name</th>
+			<th>Last name</th>
+			<th>price</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% _.each(products, function(product) { %>
+			<tr>
+				<td><%= htmlEncode(product.get('name')) %></td>
+				<td><%= htmlEncode(product.get('description')) %></td>
+				<td><%= htmlEncode(product.get('price')) %></td>
+				<td><input type="button" onclick="location.href='#/edit/<%= product.id %>'" value="Edit"/></td>
+			</tr>	
+		<% }); %>
+	</tbody>
+</table>

@@ -1,0 +1,15 @@
+<form id="editForm" class="edit-user-form">
+	<table>
+		<tr>
+			<td></td><td><input type="text" name="name" value="<%= product ? htmlEncode(product.get('name')) : '' %>" %></td>
+			<td></td><td><input type="text" name="description" value="<%= product ? htmlEncode(product.get('description')) : '' %>" %></td>
+			<td></td><td><input type="text" name="price" value="<%= product ? htmlEncode(product.get('price')) : '' %>" %></td>
+		</tr>
+	</table>
+	<hr />
+	<button type="submit"><%= product ? 'Update' : 'Create' %></button>
+	<% if(product) { %>
+		<input type="hidden" name="id" value="<%= product.id %>" />
+		<input type="button" id="deleteProduct" value="Delete" />
+	<% } %>	
+</form>
